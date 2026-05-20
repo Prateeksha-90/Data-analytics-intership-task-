@@ -1,0 +1,87 @@
+# Import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Style setting
+sns.set(style="whitegrid")
+
+# Load dataset (CSV file)
+# Example: student_data.csv (aap apna dataset use kar sakte ho)
+data = pd.read_csv("data.csv")
+
+# Show first 5 rows
+print("Dataset Preview:")
+print(data.head())
+
+# Basic info
+print("\nDataset Info:")
+print(data.info())
+
+# Handle missing values
+data = data.dropna()
+
+# -------------------------------
+# 📊 1. Bar Chart
+# -------------------------------
+plt.figure()
+sns.countplot(x='Category', data=data)
+plt.title("Count of Categories")
+plt.xlabel("Category")
+plt.ylabel("Count")
+plt.show()
+
+# -------------------------------
+# 📊 2. Histogram
+# -------------------------------
+plt.figure()
+plt.hist(data['Value'], bins=10)
+plt.title("Distribution of Values")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.show()
+
+# -------------------------------
+# 📊 3. Line Chart
+# -------------------------------
+plt.figure()
+plt.plot(data['Date'], data['Value'])
+plt.title("Trend Over Time")
+plt.xlabel("Date")
+plt.ylabel("Value")
+plt.xticks(rotation=45)
+plt.show()
+
+# -------------------------------
+# 📊 4. Pie Chart
+# -------------------------------
+category_counts = data['Category'].value_counts()
+
+plt.figure()
+plt.pie(category_counts, labels=category_counts.index, autopct='%1.1f%%')
+plt.title("Category Distribution")
+plt.show()
+
+# -------------------------------
+# 📊 5. Heatmap (Correlation)
+# -------------------------------
+plt.figure()
+sns.heatmap(data.corr(), annot=True)
+plt.title("Correlation Heatmap")
+plt.show()
+
+# -------------------------------
+# 📊 6. Box Plot
+# -------------------------------
+plt.figure()
+sns.boxplot(x='Category', y='Value', data=data)
+plt.title("Boxplot of Value by Category")
+plt.show()
+
+# -------------------------------
+# 📊 7. Scatter Plot
+# -------------------------------
+plt.figure()
+sns.scatterplot(x='Value', y='Another_Value', data=data)
+plt.title("Scatter Plot")
+plt.show()
