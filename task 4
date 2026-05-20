@@ -1,0 +1,73 @@
+# Install (agar pehle install nahi hai)
+# pip install pandas nltk textblob matplotlib seaborn
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from textblob import TextBlob
+
+# -------------------------------
+# 📁 Load Dataset
+# -------------------------------
+data = pd.read_csv("reviews.csv")   # apni file ka naam yaha dalna
+
+print("Preview:")
+print(data.head())
+
+# -------------------------------
+# 🧹 Text Cleaning Function
+# -------------------------------
+def clean_text(text):
+    text = str(text).lower()
+    return text
+
+data['clean_review'] = data['Review'].apply(clean_text)
+
+# -------------------------------
+# 🤖 Sentiment Function
+# -------------------------------
+def get_sentiment(text):
+    analysis = TextBlob(text)
+    score = analysis.sentiment.polarity
+    
+    if score > 0:
+        return "Positive"
+    elif score < 0:
+        return "Negative"
+    else:
+        return "Neutral"
+
+data['Sentiment'] = data['clean_review'].apply(get_sentiment)
+
+# -------------------------------
+# 📊 Result Summary
+# -------------------------------
+print("\nSentiment Counts:")
+print(data['Sentiment'].value_counts())
+
+# -------------------------------
+# 📊 Visualization
+# -------------------------------
+plt.figure()
+sns.countplot(x='Sentiment', data=data)
+plt.title("Sentiment Analysis Result")
+plt.xlabel("Sentiment")
+plt.ylabel("Count")
+plt.show()
+
+# -------------------------------
+# 📊 Pie Chart
+# -------------------------------
+sentiment_counts = data['Sentiment'].value_counts()
+
+plt.figure()
+plt.pie(sentiment_counts, labels=sentiment_counts.index, autopct='%1.1f%%')
+plt.title("Sentiment Distribution")
+plt.show()
+
+# -------------------------------
+# 💾 Save Output
+# -------------------------------
+data.to_csv("output_sentiment.csv", index=False)
+
+print("\nAnalysis Complete! File saved as output_sentiment.csv")
