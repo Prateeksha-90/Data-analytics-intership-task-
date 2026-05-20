@@ -1,0 +1,58 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as 
+
+# Step 1: Data load karo
+df = pd.read_csv("quotes_data.csv")
+
+# Step 2: Basic Info
+print("\n🔹 First 5 rows:")
+print(df.head())
+
+print("\n🔹 Dataset Info:")
+print(df.info())
+
+print("\n🔹 Null Values:")
+print(df.isnull().sum())
+
+print("\n🔹 Duplicate Rows:")
+print(df.duplicated().sum())
+
+# Step 3: Basic Statistics
+print("\n🔹 Basic Stats:")
+print(df.describe(include='all'))
+
+# Step 4: Unique Authors Count
+print("\n🔹 Unique Authors:", df['Author'].nunique())
+
+# Step 5: Top Authors
+top_authors = df['Author'].value_counts().head(10)
+print("\n🔹 Top Authors:\n", top_authors)
+
+# Step 6: Plot Top Authors
+plt.figure()
+top_authors.plot(kind='bar')
+plt.title("Top 10 Authors")
+plt.xlabel("Author")
+plt.ylabel("Number of Quotes")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Step 7: Tag Analysis
+# Tags ko split karke alag rows me convert
+tags_series = df['Tags'].str.split(', ').explode()
+
+top_tags = tags_series.value_counts().head(10)
+
+print("\n🔹 Top Tags:\n", top_tags)
+
+# Step 8: Plot Top Tags
+plt.figure()
+top_tags.plot(kind='bar')
+plt.title("Top 10 Tags")
+plt.xlabel("Tags")
+plt.ylabel("Frequency")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
